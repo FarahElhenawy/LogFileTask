@@ -41,3 +41,11 @@ Write-Output "`n"
 # 8. Save all 404 requests to a new file
 Write-Output "[8] Saving 404 requests to file (404_requests.txt)"
 Select-String -Path $logPath -Pattern " 404 " | Set-Content "$env:USERPROFILE\Downloads\404_requests.txt"
+
+# 9. Count of GET and POST requests
+Write-Output "[9] GET and POST request count:"
+(Get-Content $logPath | ForEach-Object {
+    if ($_ -match '"(GET|POST) ') { $matches[1] }
+}) | Group-Object | Sort-Object Count -Descending | Format-Table Count, Name -AutoSize
+Write-Output "`n"
+
